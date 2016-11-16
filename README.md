@@ -1,4 +1,4 @@
-This is a test.
+
 
 Copyright (c) 2016 Theodore Gast, Chuyuan Fu, Chenfanfu Jiang, Joseph Teran
 
@@ -28,6 +28,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+################################################################################
+SimulationDriver.h writes to file, manages time-stepping
 ################################################################################
 ImplicitQRSVD.h implements 2D and 3D polar decompositions and SVDs.
 Tools.h provides a random number generator and a timer.

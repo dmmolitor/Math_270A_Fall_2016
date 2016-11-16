@@ -58,5 +58,5 @@ int main()
 {
   //EnergyTest();
   ElasticitySimulation();
-  //ConvertBinaryToDat();
+  ConvertBinaryToDat();
 }

@@ -95,14 +95,18 @@ std::string output_directory;
 
   void WriteState(const int number){
     std::ofstream outdata;
-    std::string simulation_data_filename(output_directory+std::string("/simulation_info.dat"));
+    //std::string simulation_data_filename(output_directory+std::string("/simulation_info.dat"));
+    std::string simulation_data_filename("output/simulation_info.dat");
     outdata.open(simulation_data_filename.c_str());
     outdata << number << std::endl;
     outdata.close();
     Write_State(number,simulation_data_filename);
+      // IS SOMETHING SUPPOSED TO GO HERE? WHERE IS THE FILE IT WRITES TO?
+      std::cout << "write" << std::endl;
   }
 
-  virtual void Write_State(const int number,std::string& simulation_data_filename){}
+  virtual void Write_State(const int number,std::string& simulation_data_filename){
+  }
   virtual bool Read_State(const int number,std::string& simulation_data_filename){return false;}
 
   virtual void Advance_One_Time_Step(){
@@ -118,6 +122,7 @@ std::string output_directory;
       bool write_to_file=false;
       Set_Dt(write_to_file);
       Advance_One_Time_Step();
+      //std::cout << "write_to_file " << write_to_file << ", frame = " << current_frame  << std::endl;
       if(write_to_file) WriteState(current_frame);
     }
   }
@@ -143,7 +148,7 @@ public:
   rho((T)1),k((T)1),x_n(N_input),x_np1(N_input),v_n(N_input),x_hat(N_input),residual(N_input),mass(N_input),delta(N_input),
   Newton_tol((T)1e-5),max_newton_it(10),be_matrix(N){
     cons_model=new LinearElasticity<T>(k);
-    lf=new FEMHyperelasticity<T>(a,dX,N,*cons_model);
+    lf=new FEMHyperelasticity<T>(a,dX,N,*cons_model);//!!!!!!!
   }
 
   ~ElasticityDriver(){
@@ -174,7 +179,8 @@ public:
       lf->AddForce(residual,x_np1,-dt*dt);
       T norm=(T)0;for(int i=0;i<N;i++) norm+=residual(i)*residual(i)/mass(i);
       norm=sqrt(norm);
-      std::cout << "Residual = " << norm << std::endl;
+      //std::cout << "Residual = " << norm << std::endl;
+      //std::cout << "it " << it << std::endl;
       be_matrix.SetToZero();
       for(int i=0;i<N;i++) be_matrix(i,i)=mass(i);
       lf->AddForceDerivative(be_matrix,x_np1,-dt*dt);
@@ -183,6 +189,7 @@ public:
     }
     v_n=(T)1/dt*(x_np1-x_n);
     x_n=x_np1;
+    //std::cout << "x_n " << x_n << std::endl;
   }
 
   void Write_State(const int number,std::string& simulation_data_filename){
