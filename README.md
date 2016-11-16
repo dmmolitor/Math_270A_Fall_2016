@@ -1,4 +1,5 @@
 
+Edited by Denali Molitor for 270A HW2
 
 Copyright (c) 2016 Theodore Gast, Chuyuan Fu, Chenfanfu Jiang, Joseph Teran
 
