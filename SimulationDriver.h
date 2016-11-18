@@ -101,7 +101,6 @@ std::string output_directory;
     outdata << number << std::endl;
     outdata.close();
     Write_State(number,simulation_data_filename);
-      // IS SOMETHING SUPPOSED TO GO HERE? WHERE IS THE FILE IT WRITES TO?
       std::cout << "write" << std::endl;
   }
 
@@ -157,38 +156,49 @@ public:
   }
 
   void Initialize(){
-    //set intiial positions and velocity
+    //set initial positions and velocity
     for(int i=0;i<N;i++){
-      x_n(i)=(T).7*(a+(T)i*dX);
+      x_n(i)=(T).7*(a+(T)i*dX); // Initial okay
       v_n(i)=(T)0;
     }
     //intialize mass lumped mass matrix from density
     for(int e=0;e<N-1;e++){
-      mass(e)+=rho*dX;
+      mass(e)+=rho*dX;// WHY DOES THE LAST ONE ONLY HAVE 1? IS THIS M? SHOULD WE CHANGE THE FIRST TO HAVE 1?
       mass(e+1)+=rho*dX;}
     SimulationDriver<T>::Initialize();
   }
 
-  virtual void Advance_One_Time_Step(){
+  virtual void Advance_One_Time_Step(){// Change phi bdry condn here?????
     time+=dt;
     x_hat=x_n+dt*v_n;
     x_np1=x_n;//initial guess
 
     for(int it=1;it<max_newton_it;it++){
       residual=mass.asDiagonal()*(x_hat-x_np1);
-      lf->AddForce(residual,x_np1,dt*dt);
+      lf->AddForce(residual,x_np1,dt*dt); // residual includes bc on sigma
       T norm=(T)0;for(int i=0;i<N;i++) norm+=residual(i)*residual(i)/mass(i);
       norm=sqrt(norm);
       //std::cout << "Residual = " << norm << std::endl;
       std::cout << "Newton residual at iteration " << it << " = " << norm << std::endl;
       be_matrix.SetToZero();
       for(int i=0;i<N;i++) be_matrix(i,i)=mass(i);
-      lf->AddForceDerivative(be_matrix,x_np1,-dt*dt);
+      lf->AddForceDerivative(be_matrix,x_np1,-dt*dt);// Forms the matrix T = M+dt^2k Should include bc on phi
+      // Fix the left endpoint
+      be_matrix(1,0) = 0;
+      be_matrix(0,1) = 0;
+      residual(0) = 0;
+      // Set force at right end point
+      residual(N-1) -= 10*dt*dt;
+      //std::cout << delta << std::endl;
+
       be_matrix.QRSolve(delta,residual);
-      x_np1+=delta;
+      x_np1+=delta;//need delta(0) = 0
+      //std::cout << "delta(0): " << delta(0) << std::endl;
     }
     v_n=(T)1/dt*(x_np1-x_n);
+    //std::cout << "v_n(0): " << v_n(0) << std::endl;
     x_n=x_np1;
+    std::cout << x_np1 << std::endl;
     //std::cout << "x_n " << x_n << std::endl;
   }
 
