@@ -147,7 +147,7 @@ public:
   rho((T)1),k((T)100),x_n(N_input),x_np1(N_input),v_n(N_input),x_hat(N_input),residual(N_input),mass(N_input),delta(N_input),
   Newton_tol((T)1e-5),max_newton_it(10),be_matrix(N){
     cons_model=new LinearElasticity<T>(k);
-    lf=new FEMHyperelasticity<T>(a,dX,N,*cons_model);//!!!!!!!
+    lf=new FEMHyperelasticity<T>(a,dX,N,*cons_model);
   }
 
   ~ElasticityDriver(){
@@ -189,16 +189,14 @@ public:
       residual(0) = 0;
       // Set force at right end point
       residual(N-1) -= 10*dt*dt;
-      //std::cout << delta << std::endl;
 
       be_matrix.QRSolve(delta,residual);
-      x_np1+=delta;//need delta(0) = 0
-      //std::cout << "delta(0): " << delta(0) << std::endl;
+      x_np1+=delta;
     }
     v_n=(T)1/dt*(x_np1-x_n);
     //std::cout << "v_n(0): " << v_n(0) << std::endl;
     x_n=x_np1;
-    std::cout << x_np1 << std::endl;
+    //std::cout << x_np1 << std::endl;
     //std::cout << "x_n " << x_n << std::endl;
   }
 
