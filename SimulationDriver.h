@@ -189,21 +189,12 @@ public:
   void Initialize(){
     //set initial positions and velocity
     for(int i=0;i<N;i++){
-      //x_n(i)=(T).7*(a+(T)i*dX); // Initial okay old version
       T x=(a+(T)i*dX);
       x_n(i)=(T).7*x;
       v_n(i)=(T)0;
     }
     //intialize mass lumped mass matrix from density
     for(int e=0;e<N-1;e++){
-// <<<<<<< HEAD
-//       mass(e)+=rho*dX;// WHY DOES THE LAST ONE ONLY HAVE 1? IS THIS M? SHOULD WE CHANGE THE FIRST TO HAVE 1?
-//       mass(e+1)+=rho*dX;}
-//     SimulationDriver<T>::Initialize();
-//   }
-//
-//   virtual void Advance_One_Time_Step(){// Change phi bdry condn here?????
-// =======
       mass(e)+=(T).5*rho*dX;
       mass(e+1)+=(T).5*rho*dX;}
 

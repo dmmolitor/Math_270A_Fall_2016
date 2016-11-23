@@ -27,14 +27,8 @@ void ElasticitySimulation(){
 
   typedef double T;
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
-  // int N=20;
-  // T a=(T)0,b=(T)1;
-  // T dX=(b-a)/(T)(N-1);
-  // T dt=(T).01;
-  // std::string output_dir("output");
-  // JIXIE::ElasticityDriver<T> driver((T).5,30,dt,N,a,dX,output_dir);
 
-  JIXIE::ElasticityParameters<T> parameters;
+  JIXIE::ElasticityParameters<T> parameters; // Parameter class
   parameters.N=20;
   parameters.a=(T)0;
   T b=(T)1; // Is there a reason this is done differently?
