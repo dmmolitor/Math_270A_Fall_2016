@@ -9,7 +9,7 @@ void EnergyTest(){
   typedef double T;
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
   int N=5;
-  T a=(T)0,b=(T)1;
+  T a=(T)0,b=(T).1;//changed from 1
   T dX=(b-a)/(T)(N-1);
   JIXIE::NeoHookean<T> nh((T)1);
   JIXIE::LinearElasticity<T> le((T)1);
@@ -25,12 +25,12 @@ void EnergyTest(){
 void ElasticitySimulation(){
   typedef double T;
   typedef Eigen::Matrix<T,Eigen::Dynamic,1> TVect;
-  int N=5;
+  int N=20;
   T a=(T)0,b=(T)1;
   T dX=(b-a)/(T)(N-1);
   T dt=(T).01;
   std::string output_dir("output");
-  JIXIE::ElasticityDriver<T> driver((T)5,30,dt,N,a,dX,output_dir);
+  JIXIE::ElasticityDriver<T> driver((T).5,30,dt,N,a,dX,output_dir);
   bool verbose=true;
   driver.RunSimulation(verbose);
 }
